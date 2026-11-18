@@ -1,0 +1,4 @@
+outcome,eligible_percent,eligible_n,not_eligible_percent,not_eligible_n,denominator_note
+院内死亡,32.8,108/329,26.3,609/2317,全样本 717/2646 = 27.2%
+6个月死亡,50.6,157,50.7,1107,全样本 1264；缺失 151
+6个月死亡或功能下降,63.7,177,63.2,1256,表5按有数据者；摘要 1433/完成随访 2495 = 57.5%

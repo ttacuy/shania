@@ -1,0 +1,8 @@
+phenotype,n,age_median,cfs_median,sofa_median,withhold_percent,withdraw_percent,icu_death_percent,day30_death_percent
+A,244,83,3,1,10,2,5,9
+B,247,83,4,4,23,10,12,21
+C,134,92,4,4,39,5,13,31
+D,252,83,3,7,27,12,20,29
+E,143,83,4,6,22,7,15,23
+F,106,84,6,3,37,8,9,24
+G,142,85,7,11,40,11,57,68
