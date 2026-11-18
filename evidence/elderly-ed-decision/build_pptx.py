@@ -118,6 +118,7 @@ def charts():
     cfs = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
     ax.plot(cfs, [28.5, 33.6, 33.4, 37.7, 37.9, 45.5, 55.6, 60.6, 81.4], marker="o", color=RED, label="30天死亡")
     ax.plot(cfs, [51.7, 55.7, 51.4, 50.6, 46.5, 48.9, 48.9, 64.6, 58.1], marker="o", color=NAVY, label="气管插管")
+    ax.plot(cfs, [12.9, 10.3, 14.7, 18.7, 22.2, 24.4, 30.8, 21.5, 25.6], marker="o", color=TEAL, label="暂不给予")
     style_ax(ax, "VIP1+VIP2：7,487名≥80岁患者", "临床衰弱量表 CFS", "比例（%）")
     ax.legend(frameon=False, fontsize=9)
     ax.set_ylim(0, 100)
@@ -143,6 +144,128 @@ def charts():
     ax.legend(frameon=False, fontsize=9)
     ax.set_ylim(0, 80)
     paths["nona"] = save_fig(fig, "nonagenarian.png")
+
+    fig, ax = plt.subplots(figsize=(7.2, 3.6))
+    ages = ["65–74\nn=18901", "75–79\nn=7708", "80–84\nn=6877", "85–89\nn=5167", "≥90\nn=2810"]
+    death = [29, 34, 40, 43, 50]
+    ax.bar(ages, death, color=[NAVY, NAVY, CLAY, CLAY, RED], zorder=2)
+    for i, v in enumerate(death):
+        ax.text(i, v + 1.2, f"{v}%", ha="center", fontsize=11, color="#1A1A1A")
+    ax.set_ylim(0, 62)
+    style_ax(ax, "急诊插管后的院内死亡", "年龄（岁）。≥65，排除创伤和院外骤停", "院内死亡（%）")
+    paths["ouchi"] = save_fig(fig, "ouchi_intubation_death.png")
+
+    fig, ax = plt.subplots(figsize=(6.4, 3.5))
+    bands = ["18–44", "45–64", "65–74", "75–84", ">84"]
+    refusal = [11, 15, 18, 23, 36]
+    ax.bar(bands, refusal, color=CLAY, zorder=2)
+    for i, v in enumerate(refusal):
+        ax.text(i, v + 0.8, f"{v}%", ha="center", fontsize=10)
+    ax.set_ylim(0, 48)
+    style_ax(ax, "Eldicus：拒绝入ICU", "年龄（岁）", "拒绝（%）")
+    paths["eldicus_refusal"] = save_fig(fig, "eldicus_refusal.png")
+
+    fig, ax = plt.subplots(figsize=(6.6, 3.5))
+    x = np.arange(len(bands))
+    ax.bar(x - 0.18, [10.2, 21.2, 27.9, 35.5, 41.5], 0.36, label="收入", color=NAVY, zorder=2)
+    ax.bar(x + 0.18, [12.5, 22.3, 34.6, 40.4, 58.5], 0.36, label="拒绝", color=RED, zorder=2)
+    ax.set_xticks(x, bands)
+    ax.set_ylim(0, 75)
+    style_ax(ax, "同一研究的死亡比例", "年龄（岁）。观察性，不是随机试验", "死亡（%）")
+    ax.legend(frameon=False, fontsize=9)
+    paths["eldicus_death"] = save_fig(fig, "eldicus_death.png")
+
+    fig, ax = plt.subplots(figsize=(11.5, 3.8))
+    centers = list(range(1, 16))
+    elig = [8.4, 21.4, 7.5, 11.3, 13.0, 10.3, 10.0, 27.9, 44.4, 20.6, 28.0, 38.8, 5.6, 10.2, 5.7]
+    colors = [TEAL if c != 9 else SLATE for c in centers]
+    ax.bar([str(c) for c in centers], elig, color=colors, zorder=2)
+    ax.set_ylim(0, 55)
+    style_ax(ax, "ICE-CUB：15家医院把≥80岁判为可入ICU的比例", "医院编号。灰色是中心9，只有9人", "可入ICU（%）")
+    paths["centers"] = save_fig(fig, "icecub_centers.png")
+
+    fig, ax = plt.subplots(figsize=(7.2, 3.6))
+    reasons = ["高危情境", "资源需求", "危险区\n生命体征", "两者同时", "剧痛", "即时\n救命干预", "未知"]
+    pre = [24.8, 21.4, 17.1, 3.4, 14.5, 3.4, 6.8]
+    post = [24.2, 25.3, 8.4, 17.9, 10.5, 2.1, 4.2]
+    x = np.arange(len(reasons))
+    ax.bar(x - 0.18, pre, 0.36, label="教学前", color=NAVY, zorder=2)
+    ax.bar(x + 0.18, post, 0.36, label="一年后", color=CLAY, zorder=2)
+    ax.set_xticks(x, reasons, fontsize=8)
+    ax.set_ylim(0, 36)
+    style_ax(ax, "低估分诊的原因占低估人次的比例", "Grossmann，专家复核", "占低估人次（%）")
+    ax.legend(frameon=False, fontsize=9)
+    paths["grossmann"] = save_fig(fig, "grossmann_reasons.png")
+
+    fig, ax = plt.subplots(figsize=(5.6, 3.4))
+    esi = ["1级\n18人", "2级\n176人", "3级\n461人", "4级\n100人", "5级\n18人"]
+    ax.bar(esi, [2, 23, 60, 13, 2], color=NAVY, zorder=2)
+    ax.set_ylim(0, 78)
+    style_ax(ax, "≥65岁的ESI分布", "Platts-Mills，n=782", "就诊（%）")
+    paths["esi"] = save_fig(fig, "platts_esi.png")
+
+    fig, ax = plt.subplots(figsize=(7.0, 3.4))
+    names = ["CFS 2–3", "CFS 4–5", "CFS 6", "CFS ≥7"]
+    est = [1.16, 1.28, 1.56, 1.78]
+    lo = [0.94, 1.06, 1.32, 1.49]
+    hi = [1.43, 1.55, 1.84, 2.12]
+    y = np.arange(len(names))[::-1]
+    ax.errorbar(est, y, xerr=[np.array(est) - lo, np.array(hi) - est], fmt="o", color=NAVY, capsize=4, ms=7)
+    ax.axvline(1, color=SLATE, lw=0.8)
+    ax.set_yticks(y, names)
+    ax.set_xlim(0.7, 2.4)
+    style_ax(ax, "≥65岁ICU死亡 HR，对照CFS 1", "校正SOFA、性别和年龄后的HR", "")
+    paths["bruno"] = save_fig(fig, "bruno_cfs_hr.png")
+
+    fig, ax = plt.subplots(figsize=(7.2, 3.5))
+    groups = ["收入 ICU", "未收\n病情不够重", "未收\n太重或太老"]
+    x = np.arange(3)
+    ax.bar(x - 0.18, [56.0, 65.2, 32.7], 0.36, label="出院时仍存活", color=NAVY, zorder=2)
+    ax.bar(x + 0.18, [40.0, 50.0, 11.5], 0.36, label="一年仍存活", color=CLAY, zorder=2)
+    ax.set_xticks(x, groups)
+    ax.set_ylim(0, 85)
+    style_ax(ax, "挪威6家医院：已被转诊的≥80岁", "摘要未给出三组人数", "存活（%）")
+    ax.legend(frameon=False, fontsize=9)
+    paths["andersen"] = save_fig(fig, "andersen_survival.png")
+
+    fig, ax = plt.subplots(figsize=(7.2, 3.6))
+    items = ["血管活性药", "气管插管", "暂不给予", "无创通气", "撤除", "肾脏替代"]
+    vals = [59.5, 49.9, 29.4, 23.1, 14.0, 11.0]
+    ax.barh(items[::-1], vals[::-1], color=NAVY, height=0.62, zorder=2)
+    for y, v in enumerate(vals[::-1]):
+        ax.text(v + 1, y, f"{v:.1f}%", va="center", fontsize=10)
+    ax.set_xlim(0, 78)
+    style_ax(ax, "VIP2：3920名急性≥80岁", "占该队列（%）", "")
+    paths["vip2"] = save_fig(fig, "vip2_intensity.png")
+
+    fig, ax = plt.subplots(figsize=(7.2, 3.5))
+    labels = ["A\n244", "B\n247", "C\n134", "D\n252", "E\n143", "F\n106", "G\n142"]
+    death30 = [9, 21, 31, 29, 23, 24, 68]
+    ax.bar(labels, death30, color=[NAVY, NAVY, TEAL, CLAY, NAVY, CLAY, RED], zorder=2)
+    ax.set_ylim(0, 85)
+    style_ax(ax, "VIP2亚组的七种表型：30天死亡", "表型及人数。C最老，G的SOFA和CFS都高", "30天死亡（%）")
+    paths["pheno"] = save_fig(fig, "phenotypes_death.png")
+
+    fig, ax = plt.subplots(figsize=(7.0, 3.5))
+    methods = ["未校正", "多变量回归", "工具变量\n（到医院距离）"]
+    x = np.arange(3)
+    ax.bar(x - 0.18, [35.9, 21.5, 14.8], 0.36, label="入ICU", color=CLAY, zorder=2)
+    ax.bar(x + 0.18, [11.7, 17.8, 20.5], 0.36, label="住普通病房", color=NAVY, zorder=2)
+    ax.set_xticks(x, methods)
+    ax.set_ylim(0, 48)
+    style_ax(ax, "肺炎：三种算法的30天死亡", "Medicare，>64岁，2010–2012", "30天死亡（%）")
+    ax.legend(frameon=False, fontsize=9)
+    paths["valley"] = save_fig(fig, "valley_three_methods.png")
+
+    fig, ax = plt.subplots(figsize=(7.0, 3.4))
+    dest = ["居家护理\nn=45", "护理机构\nn=139", "长期急性病房\nn=93", "安宁疗护\nn=11"]
+    days = [384, 229, 133, 10]
+    ax.barh(dest[::-1], days[::-1], color=[NAVY, TEAL, CLAY, RED][::-1], height=0.62, zorder=2)
+    for y, v in enumerate(days[::-1]):
+        ax.text(v + 8, y, f"{v}天", va="center", fontsize=11)
+    ax.set_xlim(0, 480)
+    style_ax(ax, "出院后至死亡的中位天数", "天数", "")
+    paths["dest"] = save_fig(fig, "destination_days.png")
     return paths
 
 
@@ -204,6 +327,12 @@ def footer(slide, page, total):
     add_text(slide, f"{page} / {total}", 10.6, 7.16, 2.2, 0.24, 11, color=SECONDARY, align=PP_ALIGN.RIGHT)
 
 
+def stamp_pages(prs):
+    total = len(prs.slides)
+    for i, slide in enumerate(prs.slides, 1):
+        footer(slide, i, total)
+
+
 def new_slide(prs):
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     bg = slide.background
@@ -236,8 +365,7 @@ def build(paths):
     prs.slide_width = W
     prs.slide_height = H
     prs.slides._sldIdLst.clear()
-    # blank layout exists on default template
-    total = 16
+    total = 0
 
     # 1 cover
     s = new_slide(prs)
@@ -246,7 +374,21 @@ def build(paths):
     add_text(s, "老年患者现状、国家要求、与年轻患者的差别、\n规范分诊、高危识别和综合救治细节", 0.8, 2.3, 11.2, 0.9, 20, color=SECONDARY)
     add_text(s, "纯白底数据简报。人口与政策用国家统计局、国家卫生健康委公开文件。\n急诊决策数字用已核对的原始研究，检索日 2026年11月18日（北京时间）。", 0.8, 3.5, 11.2, 0.8, 15)
     add_text(s, "核心人群是急诊 ≥80 岁。国家文件里的 60 岁、65 岁界线单独保留，不并进同一个分母。", 0.8, 4.5, 11.2, 0.5, 15, color=SECONDARY)
-    footer(s, 1, total)
+
+    s = new_slide(prs)
+    header(s, "先分清图上的是哪一类数字", "三类数字可以同时出现在一次就诊里，不能相加，也不能互相解释")
+    kinds = [
+        ("决定行为", "收治、拒绝、询问、限制治疗", "描述医师实际做了什么。同一标准下，医院之间可以差几倍。这不是治疗效果。"),
+        ("预后伴随", "年龄、CFS、SOFA与死亡", "HR大于1表示死亡风险更高。限制治疗和死亡常同时出现，不能读成限制造成了死亡。"),
+        ("策略效应", "随机试验或工具变量", "ICE-CUB2，以及肺炎研究里用到医院距离做的估计，属于这一类。三种算法的结果不能取平均。"),
+    ]
+    for i, (title, sub, body) in enumerate(kinds):
+        x = 0.5 + i * 4.2
+        rect(s, x, 1.4, 4.0, 3.5)
+        add_text(s, title, x + 0.22, 1.6, 3.55, 0.5, 22, bold=True, color=BLUE)
+        add_text(s, sub, x + 0.22, 2.25, 3.55, 0.7, 16, bold=True)
+        add_text(s, body, x + 0.22, 3.1, 3.55, 1.5, 15)
+    add_text(s, "每张图只放一类数字，年龄界线写在图题里。≥80岁、≥75岁和≥65岁保持原研究的切点。国家文件里的60岁、65岁是服务口径，不并进急诊研究的分母。", 0.5, 5.15, 12.3, 0.8, 15)
 
     # 2 status
     s = new_slide(prs)
@@ -257,7 +399,6 @@ def build(paths):
     card(s, 9.98, 1.28, 2.85, 1.62, "人均预期寿命", "79.0 岁", "2024年度老龄事业公报")
     s.shapes.add_picture(str(paths["age"]), Inches(0.5), Inches(3.12), Inches(7.6), Inches(3.75))
     add_text(s, "三组互不重叠。\n0–15岁：2.3999亿，占17.1%。\n16–59岁：8.5798亿，占60.9%。\n60岁及以上：3.1031亿，占22.0%。\n65岁及以上包含在上一组内。\n0–15岁含不满16周岁。\n\n范围是大陆31个省、自治区、直辖市和现役军人，不含港澳台居民和外籍人员。", 8.25, 3.2, 4.55, 3.6, 14)
-    footer(s, 2, total)
 
     # 3 health burden and supply
     s = new_slide(prs)
@@ -276,7 +417,6 @@ def build(paths):
         add_text(s, k, 0.68, y + 0.22, 2.3, 0.44, 15, bold=True, color=BLUE)
         add_text(s, v, 3.05, y + 0.16, 9.5, 0.58, 15)
         y += 0.96
-    footer(s, 3, total)
 
     # 4 conference and guidance
     s = new_slide(prs)
@@ -295,7 +435,6 @@ def build(paths):
         add_text(s, name, 1.9, y, 3.3, 0.7, 14, bold=True)
         add_text(s, text, 5.3, y, 7.5, 0.78, 13)
         y += 0.92
-    footer(s, 4, total)
 
     # 5 six links and targets
     s = new_slide(prs)
@@ -314,7 +453,6 @@ def build(paths):
         "安宁疗护按充分知情、自愿选择。生命终末期同时提供症状控制和心理支持。",
     ]
     add_text(s, "\n\n".join(notes), 7.7, 2.35, 5.1, 4.4, 14)
-    footer(s, 5, total)
 
     # 6 emergency national requirements
     s = new_slide(prs)
@@ -332,7 +470,23 @@ def build(paths):
         add_text(s, title, 0.5, y, 1.7, 0.85, 13, bold=True, color=BLUE)
         add_text(s, text, 2.25, y, 10.55, 0.88, 13)
         y += 0.95
-    footer(s, 6, total)
+    s = new_slide(prs)
+    header(s, "院前急救的量化目标", "国卫医发〔2020〕19号写的是2025年目标，不是某一年的实测完成率。全体人群标准，同样约束老年急救。")
+    targets = [
+        ("≤5 公里", "城市急救半径", "农村为10–20公里"),
+        ("1 / 3万", "救护车配置", "县级按辖区人口的300%核定基数"),
+        ("95%", "10秒内接听", "呼叫满足率同样是95%"),
+        ("95%", "3分钟内出车", "调度原则：就近、就急、就专科"),
+        ("98%", "现场监护或抢救", "针对已经判定的危急重症"),
+        ("100%", "120覆盖与病历", "负压救护车比例不低于40%"),
+    ]
+    for i, (v, t, n) in enumerate(targets):
+        x = 0.5 + (i % 3) * 4.2
+        y = 1.35 + (i // 3) * 2.6
+        rect(s, x, y, 4.0, 2.35)
+        add_text(s, v, x + 0.22, y + 0.25, 3.55, 0.6, 28, bold=True, color=BLUE)
+        add_text(s, t, x + 0.22, y + 1.0, 3.55, 0.4, 16, bold=True)
+        add_text(s, n, x + 0.22, y + 1.5, 3.55, 0.55, 14)
 
     # 7 difference vs young
     s = new_slide(prs)
@@ -347,7 +501,24 @@ def build(paths):
         "年轻患者的成功多是活着离院。高龄还要问90天能否自理、住哪里、怎样的恢复可以接受。",
     ]
     add_text(s, "\n\n".join(diffs), 7.55, 1.2, 5.3, 5.7, 13)
-    footer(s, 7, total)
+
+    s = new_slide(prs)
+    header(s, "插管之后，死亡随年龄上升", "Ouchi等，美国262家医院，2008–2015年。这是插管后的预后，不是“不插管更好”的证据。")
+    s.shapes.add_picture(str(paths["ouchi"]), Inches(0.3), Inches(1.2), Inches(7.3), Inches(3.65))
+    notes = [
+        "识别41363人，分析35036人。排除创伤，以及院外骤停或院外插管。",
+        "相对65–74岁的校正OR：75–79岁1.3（1.2–1.4），80–84岁1.7（1.6–1.8），85–89岁1.9（1.8–2.1），≥90岁2.6（2.4–2.9）。",
+        "诊断不同，死亡也不同。呼吸衰竭26%（aOR 0.5），意识改变或癫痫29%（0.7），心力衰竭23%（0.5），脓毒症43%（1.5），卒中54%（2.4）。",
+        "出院回家24%，去其他机构41%。摘要里印出的总体死亡区间与点估计不一致，这里只用分年龄的比例。",
+    ]
+    add_text(s, "\n\n".join(notes), 7.6, 1.25, 5.25, 4.2, 14)
+    add_text(s, "来源：Ouchi 2018。年龄是插管时年龄。OR已校正，仍是预后而不是治疗策略的效应。", 0.5, 6.45, 12.3, 0.45, 13, color=SECONDARY)
+
+    s = new_slide(prs)
+    header(s, "年龄越大，被拒绝入ICU的比例越高", "Eldicus，欧洲。8472次分诊、6796名患者。收入5602人（82%），拒绝1194人（18%）。其中49%为≥65岁。")
+    s.shapes.add_picture(str(paths["eldicus_refusal"]), Inches(0.25), Inches(1.25), Inches(6.4), Inches(3.5))
+    s.shapes.add_picture(str(paths["eldicus_death"]), Inches(6.7), Inches(1.25), Inches(6.3), Inches(3.5))
+    add_text(s, "校正后，收入相对拒绝的死亡OR：65岁以上0.65（0.55–0.78），65岁以下0.74（0.57–0.97）。这是观察性比较。被拒绝的人本来就更重，图上的死亡差不能当成“拒绝造成的超额死亡”。本研究的拒绝评分权重和切点不在幻灯片里，避免被当成可用规则。", 0.5, 5.0, 12.3, 1.5, 15)
 
     # 8 frailty vs acuity
     s = new_slide(prs)
@@ -365,7 +536,6 @@ def build(paths):
         add_text(s, v, x + 0.25, y + 0.25, 5.6, 0.6, 28, bold=True, color=BLUE)
         add_text(s, t, x + 0.25, y + 0.95, 5.6, 0.4, 16, bold=True)
         add_text(s, n, x + 0.25, y + 1.45, 5.6, 0.75, 14)
-    footer(s, 8, total)
 
     # 9 how to triage
     s = new_slide(prs)
@@ -385,12 +555,16 @@ def build(paths):
         add_text(s, n, x + 0.18, y + 0.15, 0.5, 0.45, 22, bold=True, color=BLUE)
         add_text(s, t, x + 0.7, y + 0.2, 3.15, 0.45, 16, bold=True)
         add_text(s, body, x + 0.18, y + 0.8, 3.7, 1.65, 13)
-    footer(s, 9, total)
+
+    s = new_slide(prs)
+    header(s, "同一年龄标准，医院之间的收治判断差很多", "ICE-CUB观察队列，巴黎地区15家医院，2646名≥80岁。这是决定行为，不是治疗效果。")
+    s.shapes.add_picture(str(paths["centers"]), Inches(0.35), Inches(1.18), Inches(12.6), Inches(4.2))
+    add_text(s, "正文报告的医院间范围是5.6%–38.8%（中心13和中心12）。中心9只有9人，44.4%不稳定，图中用灰色标出。可入与不可入者的6个月死亡都是50.7%。医院随机截距的中位OR为2.25（95%CrI 1.60–3.58）。", 0.5, 5.55, 12.3, 1.2, 15)
 
     # 10 identify high risk
     s = new_slide(prs)
     header(s, "识别高危：用哪一个结局，决定了谁算漏诊", "救命干预、住院、30天死亡和功能下降不是同一个真值")
-    s.shapes.add_picture(str(paths["cfs"]), Inches(0.25), Inches(1.15), Inches(7.2), Inches(5.15))
+    s.shapes.add_picture(str(paths["cfs"]), Inches(0.2), Inches(1.15), Inches(7.15), Inches(4.9))
     facts = [
         "Platts-Mills：≥65岁782人中，26人接受即时救命干预。ESI=1的敏感度42.3%（23.3–61.3%）。这26人里，1级11人、2级9人、3级6人。2级已经是高优先级。",
         "Grossmann：专家复核的低估，教学前22.5%（117/519），一年后24.1%（95/394），p=0.619。主因是高危情境和危险区生命体征，不是年龄本身。",
@@ -398,8 +572,18 @@ def build(paths):
         "高危用于加快复核、监测和老年团队响应。年龄、CFS、认知或居住机构单独不能降低急迫等级，也不能推定治疗无效。",
     ]
     add_text(s, "\n\n".join(facts), 7.6, 1.2, 5.25, 4.0, 13)
-    add_text(s, "来源：Platts-Mills 2010；Grossmann 2014；Fronczek 2021，VIP1+VIP2。CFS 8、9只有246和43人，比例不稳定。", 0.5, 6.55, 12.3, 0.45, 12, color=SECONDARY)
-    footer(s, 10, total)
+    add_text(s, "来源：Platts-Mills 2010；Grossmann 2014；Fronczek 2021，VIP1+VIP2。CFS 8、9只有246和43人，比例不稳定。暂不给予是治疗限制的一种，不是插管比例。", 0.5, 6.45, 12.3, 0.5, 12, color=SECONDARY)
+
+    s = new_slide(prs)
+    header(s, "低估分诊主要卡在高危情境和生命体征", "教学一年没有把低估比例降下来：22.5%（117/519）到24.1%（95/394），p=0.619。")
+    s.shapes.add_picture(str(paths["grossmann"]), Inches(0.15), Inches(1.15), Inches(7.45), Inches(3.7))
+    s.shapes.add_picture(str(paths["esi"]), Inches(7.7), Inches(1.2), Inches(5.2), Inches(3.2))
+    add_text(s, "26次即时救命干预的分布是1级11人、2级9人、3级6人。ESI=1的敏感度42.3%（23.3–61.3%），特异度99.2%。2级已经是高优先级。危险区生命体征在教学后占比下降，但“高危情境加危险体征”上升到17.9%。", 0.5, 5.15, 12.3, 1.4, 15)
+
+    s = new_slide(prs)
+    header(s, "衰弱升高死亡风险，但不是一个可以一刀切的点", "Bruno等个体数据meta，检索至2020年6月24日。≥65岁，对照CFS 1，并校正SOFA、性别和年龄。")
+    s.shapes.add_picture(str(paths["bruno"]), Inches(0.3), Inches(1.2), Inches(7.2), Inches(3.5))
+    add_text(s, "CFS 2–3的HR 1.16（0.94–1.43），区间含1。\n\nCFS 4–5为1.28（1.06–1.55），CFS 6为1.56（1.32–1.84），CFS ≥7为1.78（1.49–2.12）。\n\n易损（CFS 4）和衰弱都不同于健康，两者之间在该文的直接比较里没有显著差异。不能说只有CFS≥5才重要，也不能把CFS 4说成和CFS 7一样。\n\n有数据者中，任何生命支持限制：≥65岁33.3%（2736/8205），<65岁9.2%（38/414）。", 7.5, 1.25, 5.35, 5.2, 14)
 
     # 11 principles
     s = new_slide(prs)
@@ -418,7 +602,30 @@ def build(paths):
         rect(s, x, y, 4.08, 2.65)
         add_text(s, t, x + 0.18, y + 0.16, 3.7, 0.7, 16, bold=True)
         add_text(s, b, x + 0.18, y + 0.95, 3.7, 1.5, 13)
-    footer(s, 11, total)
+
+    s = new_slide(prs)
+    header(s, "综合救治的操作条款", "以下来自上传报告的候选条款草案。推荐强度尚未经过正式证据评价，不能当作现行国家标准执行。")
+    clauses = [
+        ("1", "适用于≥80岁，从到院、初次分诊、候诊复评到首次去向。≥65岁的扩展服务单独统计。"),
+        ("2", "先启动抢救和时间敏感通道。衰弱、认知和治疗目标并行采集，不作为抢救的前置条件。"),
+        ("3", "年龄、CFS、认知障碍或居住机构，单独不能降低急迫等级，也不能拒绝重症评估。"),
+        ("4", "结构化记录主诉、完整生命体征、意识和高危情境：非特异主诉、新发功能下降、急性认知改变、反复就诊、高危药物。"),
+        ("5", "病前CFS和谵妄分开记录。写下参考时间、评估者和信息来源。取不到记为未知，并安排补采。"),
+        ("6", "稳定但存在高危情境时，指定医生复核、候诊监测和老年团队转介。不把所有≥80岁一律上调同一级。"),
+        ("7", "症状变化、生命体征恶化、等待超过本级时限或临床担忧，立即复评。写下新等级、原因、时间和责任人。"),
+        ("8", "筛查阳性必须连到动作：接收团队、响应责任、监护场所和完成记录。没有老年团队时由在岗急诊团队完成最低评估。"),
+        ("9", "需要ICU时，急诊与重症评估可逆性、病前功能、获益和负担。确认决策能力、意愿和适当代理人。必要时请老年和姑息医学。"),
+        ("10", "不确定时可以做限时试验。预先写下目标、复评指标、时间、参与者和后续选项。自动评分不能生成治疗限制。"),
+        ("11", "去向同时匹配监护需求、功能和社会支持、患者目标和接收部门能力。交接最小数据集。姑息支持可与病因治疗并行。"),
+        ("12", "跟踪覆盖、阳性后行动、低优先级中的危重、过度升级、≥90岁是否被系统性放低，以及90天ADL和居住地。"),
+    ]
+    for i, (n, text) in enumerate(clauses):
+        col = i // 6
+        row = i % 6
+        x = 0.4 + col * 6.45
+        y = 1.18 + row * 0.92
+        add_text(s, n, x, y, 0.4, 0.7, 16, bold=True, color=BLUE)
+        add_text(s, text, x + 0.45, y, 5.85, 0.85, 13)
 
     # 12 details dataset
     s = new_slide(prs)
@@ -444,7 +651,6 @@ def build(paths):
         add_text(s, b, xs[1] + 0.08, y + 0.18, ws[1] - 0.12, 0.45, 14)
         add_text(s, c, xs[2] + 0.08, y + 0.18, ws[2] - 0.15, 0.45, 14)
         y += 0.78
-    footer(s, 12, total)
 
     # 13 what the trials say
     s = new_slide(prs)
@@ -457,7 +663,31 @@ def build(paths):
         "≥90岁与80–89岁的ICU死亡都是27%。九十岁以上插管更少（41%对52%），肾脏替代更少（4%对12%）。校正后30天死亡aOR 1.25（0.90–1.74）。"
     )
     add_text(s, text, 7.15, 1.2, 5.7, 5.6, 13)
-    footer(s, 13, total)
+
+    s = new_slide(prs)
+    header(s, "“太重所以不收”和“拒绝造成死亡”不是同一个数", "Andersen等，挪威6家医院，355名被转诊的≥80岁，拒绝105人（29.6%）。ICU存活71.6%。")
+    s.shapes.add_picture(str(paths["andersen"]), Inches(0.25), Inches(1.2), Inches(7.4), Inches(3.6))
+    add_text(s, "一年仍存活：收入ICU 40.0%，认为不够重而未收 50.0%，认为太重或太老而未收 11.5%。\n\n摘要没有给出这三组的人数，图上不补。\n\n太重组的低存活，是医师已经判断病情极重之后的结果。不能把它读成“如果当时收进ICU，一年存活就会从11.5%升到40%”。\n\nEldicus里>84岁被拒绝的比例是36%，拒绝者死亡58.5%，收入者41.5%。校正后的OR见前面那一页，仍然是观察性比较。", 7.7, 1.3, 5.15, 5.2, 14)
+
+    s = new_slide(prs)
+    header(s, "已经入ICU之后，实际用了哪些支持", "VIP2，22国、242个ICU，2018年5月至2019年5月。急性≥80岁，n=3920，中位年龄84岁。")
+    s.shapes.add_picture(str(paths["vip2"]), Inches(0.25), Inches(1.15), Inches(7.3), Inches(3.65))
+    add_text(s, "80%至少接受一种器官支持。ICU存活72.5%，30天存活61.1%（2346人，缺失79人）。\n\n人数：血管活性药2329，插管1953，暂不给予1140，无创通气903，撤除545，肾脏替代429。暂不给予和撤除有重叠，不能相加。\n\n单独模型里，CFS每增加1分，30天死亡HR 1.12（1.09–1.15）；SOFA每分1.15（1.14–1.17）。把治疗限制放进模型后，限制与否的HR是4.25（3.80–4.74），这是伴随关系。", 7.55, 1.2, 5.3, 5.3, 14)
+
+    s = new_slide(prs)
+    header(s, "高死亡集中在又衰弱、又有多器官衰竭的人", "Mousai等对VIP2中1268人做的聚类。国家被匿名，图上的字母是表型，不是国家。")
+    s.shapes.add_picture(str(paths["pheno"]), Inches(0.25), Inches(1.15), Inches(7.3), Inches(3.6))
+    add_text(s, "G：中位年龄85岁，CFS 7，SOFA 11。暂不给予40%，撤除11%，ICU死亡57%，30天死亡68%。\n\nC：最老，中位92岁，但CFS 4、SOFA 4。30天死亡31%，低于G。年龄高本身没有把这组推到最高死亡。\n\nA：CFS 3、SOFA 1，30天死亡9%，暂不给予只有10%。\n\n相对G，暂不给予显著更低的是A、B、D、E。撤除只在A显著更低（OR 0.16，0.05–0.43）。", 7.55, 1.25, 5.3, 5.2, 14)
+
+    s = new_slide(prs)
+    header(s, "同一次肺炎收治，三种算法方向不同", "Valley等，Medicare肺炎，>64岁，2010–2012年。1112394人，2988家医院，入ICU 328404人（30%）。")
+    s.shapes.add_picture(str(paths["valley"]), Inches(0.25), Inches(1.15), Inches(7.2), Inches(3.6))
+    add_text(s, "未校正：ICU 35.9%，病房11.7%，差+24.2个百分点。\n\n多变量回归：21.5%对17.8%，差+3.7。\n\n工具变量：14.8%对20.5%，差−5.7（−10.6到−0.9）。\n\n三个差不能平均。工具变量利用的是到有ICU医院的距离，主要影响可裁量的那部分收治，文中约为13%。≥85岁占ICU患者的26.6%，占病房患者的36.2%。", 7.5, 1.25, 5.35, 5.2, 14)
+
+    s = new_slide(prs)
+    header(s, "去向不同，后续生存时间差一个数量级", "Ouchi等，单中心MIMIC-III。≥75岁、非择期机械通气，2008–2012年。415人、454次住院，80%来自急诊。")
+    s.shapes.add_picture(str(paths["dest"]), Inches(0.2), Inches(1.15), Inches(7.4), Inches(3.6))
+    add_text(s, "图上是出院后至死亡的中位天数，不是住院日。括号里的四分位：居家护理384天（71–667），护理机构229天（41.5–574），长期急性病房133天（50–283），安宁疗护10天（4.5–12）。\n\n长期急性病房93次住院中，59次（63%）在6个月内死亡。\n\n院内死亡36.6%（166/454）。存活者出院后中位生存163.5天。48小时内有重症谈话记录的占49.1%。这是一家医院的机械通气队列。", 7.6, 1.25, 5.25, 5.2, 14)
 
     # 14 time limited and preferences
     s = new_slide(prs)
@@ -481,7 +711,6 @@ def build(paths):
         "撤除治疗与死亡强烈伴随（VIP2中有治疗限制者死亡HR 4.25）。这是决定和临终发生在一起，不能读成“限制治疗造成4倍死亡”。",
     ]
     add_text(s, "\n\n".join(details), 0.5, 2.85, 12.3, 4.1, 14)
-    footer(s, 14, total)
 
     # 15 quality
     s = new_slide(prs)
@@ -504,7 +733,6 @@ def build(paths):
         add_text(s, a, x + 0.2, yy + 0.12, 5.75, 0.38, 16, bold=True)
         add_text(s, b, x + 0.2, yy + 0.55, 5.75, 0.35, 14, color=BLUE)
         add_text(s, c, x + 0.2, yy + 0.98, 5.75, 0.55, 13)
-    footer(s, 15, total)
 
     # 16 boundaries and sources
     s = new_slide(prs)
@@ -515,16 +743,15 @@ def build(paths):
         "死亡预测高，不等于这次治疗无效。CFS高分不能单独成为拒绝抢救或拒绝ICU的理由。",
         "ESICM 2025年48条共识陈述的原文和逐条同意比例，本次没有取得全文，幻灯片不编造推荐措辞。",
         "SOLAR证明老年综合评估可以缩短符合条件患者的急诊停留，效应估计是3.1小时，不是两个中位数相减的8.5小时，而且排除了需要复苏的患者。",
+        "PRIM-ER在29家美国急诊做老年急症谈话培训。校正后住院aOR 1.03（0.93–1.14），死亡aOR 1.07（0.98–1.18）。培训本身没有改变这些结局。",
         "下一步仍是上传报告里的方案：统一≥80岁最小数据集，先静默验证，再看漏识别、工作量、治疗一致性和90天功能。",
     ]
-    y = 1.2
+    y = 1.15
     for i, line in enumerate(lines, 1):
-        add_text(s, f"{i}", 0.5, y, 0.4, 0.75, 16, bold=True, color=BLUE)
-        add_text(s, line, 1.0, y, 11.8, 0.8, 14)
-        y += 0.9
-    footer(s, 16, total)
-
-    # remove unused default if any leftover - we cleared sldIdLst before adding
+        add_text(s, f"{i}", 0.45, y, 0.35, 0.7, 14, bold=True, color=BLUE)
+        add_text(s, line, 0.9, y, 11.9, 0.72, 13)
+        y += 0.78
+    stamp_pages(prs)
     prs.save(OUT)
     return OUT
 
