@@ -1,0 +1,4 @@
+model,icu_30day_mortality_percent,ward_30day_mortality_percent,absolute_difference,ci,p
+未校正,35.9,11.7,24.2,23.8 to 24.6,<.001
+多变量回归,21.5,17.8,3.7,3.3 to 4.0,<.001
+工具变量,14.8,20.5,-5.7,-10.6 to -0.9,.02

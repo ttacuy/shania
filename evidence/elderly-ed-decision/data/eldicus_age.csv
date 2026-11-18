@@ -1,0 +1,6 @@
+age,refusal_percent,mortality_if_accepted,mortality_if_rejected,overall_mortality
+18–44,11,10.2,12.5,11
+45–64,15,21.2,22.3,21
+65–74,18,27.9,34.6,29
+75–84,23,35.5,40.4,37
+>84,36,41.5,58.5,48
