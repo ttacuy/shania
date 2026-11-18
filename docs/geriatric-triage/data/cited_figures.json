@@ -1,0 +1,42 @@
+{
+  "nhamcs_2022": {
+    "source": "NCHS. National Hospital Ambulatory Medical Care Survey: 2022 Emergency Department Summary Tables. Tables 1, 4 and 24.",
+    "url": "https://www.cdc.gov/nchs/data/nhamcs/web_tables/2022-nhamcs-ed-web-tables.pdf",
+    "all_visits_thousands": 155398,
+    "all_visits_se_thousands": 10251,
+    "rate_per_100": 47.3,
+    "rate_se": 3.1,
+    "age_65_plus_thousands": 32935,
+    "age_65_plus_se_thousands": 2702,
+    "age_65_plus_percent": 21.2,
+    "age_65_plus_percent_se": 1.2,
+    "age_65_74_rate_per_100": 46.4,
+    "age_75_plus_rate_per_100": 76.0,
+    "admission_percent_of_visits": {
+      "all": 11.5,
+      "under_15": 3.7,
+      "15_24": 4.1,
+      "25_44": 6.0,
+      "45_64": 14.0,
+      "65_74": 23.2,
+      "75_plus": 28.8
+    },
+    "ambulance_percent": {
+      "all": 17.0,
+      "65_plus": 33.4,
+      "75_plus": 39.6
+    },
+    "note": "Error bars in the figures are published standard errors, not confidence intervals."
+  },
+  "china_2024_communique": {
+    "source": "国家统计局. 中华人民共和国 2024 年国民经济和社会发展统计公报. 2025-02-28.",
+    "url": "https://www.stats.gov.cn/sj/zxfb/202502/t20250228_1958817.html",
+    "population_wan": 140828,
+    "age_60_plus_wan": 31031,
+    "age_60_plus_percent": 22.0,
+    "age_65_plus_wan": 22023,
+    "age_65_plus_percent": 15.6,
+    "total_visits_yi": 101.1,
+    "note": "总诊疗人次包含门诊、急诊、出诊等，不是急诊分年龄就诊量。"
+  }
+}
